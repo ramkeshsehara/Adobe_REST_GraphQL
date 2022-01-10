@@ -535,6 +535,60 @@ Spring Boot
 
 
 
+spring.jpa.hibernate.ddl-auto=update
+
+==> update ==> create table if not exist; if exists use it; if required alter
+
+==> validate ==> check if database tables match your entity; if true use it else throw exception
+
+==> create ==> drop and create tables for every exection ==> good for testing
+
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+
+
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
 
 
 
+C:\Users\banup>docker exec -it local-mysql bash
+root@a89ad477d23e:/# mysql -u "root" -p
+Enter password:
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 18
+Server version: 8.0.26 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2021, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use ADOBE_JAVA_2022
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> show tables
+    -> ;
++---------------------------+
+| Tables_in_ADOBE_JAVA_2022 |
++---------------------------+
+| products                  |
++---------------------------+
+1 row in set (0.00 sec)
+
+mysql> select * from products;
++----+----------------+--------+------+
+| id | name           | price  | qty  |
++----+----------------+--------+------+
+|  1 | iPhone 13      |  98000 |  100 |
+|  2 | Sony Bravia    | 128000 |  100 |
+|  3 | Samsung Refri  |  67000 |  100 |
+|  4 | Logitech Mouse |    800 |  100 |
++----+----------------+--------+------+
+4 rows in set (0.00 sec)
+
+mysql>
