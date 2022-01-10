@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,5 +32,14 @@ public class OrderService {
 		} else {
 			throw new EntityNotFoundException("product with id " + id + " doesn't exist!!!");
 		}
+	}
+	
+	public List<Product> getProductsByRange(double low, double high) {
+		return productDao.getByRange(low, high);
+	}
+	
+	@Transactional
+	public void updateProduct(int id, double price) {
+		productDao.updateProduct(id, price);
 	}
 }

@@ -592,3 +592,72 @@ mysql> select * from products;
 4 rows in set (0.00 sec)
 
 mysql>
+
+
+===
+
+JpaRepository Custom Queries
+
+public interface ProductDao extends JpaRepository<Product, Integer>{
+	List<Product> findByPrice(double price); // select * from products where price = ?
+	List<Product> findByPriceAndQuantity(double price, int quantity); // select * from products where price = ? and qty = ?
+	List<Product> findByPriceOrQuantity(double price, int quantity); // select * from products where price = ? or qty = ?
+}
+
+
+JPQL ==> Java Persistence Query Language 
+uses class and variables
+
+SQL => uses table names and column names
+
+	@Query("from Product where price >= :l and price <= :h")
+	List<Product> getByRange(@Param("l") double low, @Param("h") double high);
+
+
+	@Query(value = "select * from products where price >= :l and price <= :h", nativeQuery = true)
+	List<Product> getByRange(@Param("l") double low, @Param("h") double high);
+
+	JDBC:
+	executeQuery() ==> select
+
+	exceuteUpdate() == > INSERT, DELETE and UPDATE
+
+========================
+
+Spring provides Declartive transaction support
+	
+	Programatic transaction:
+
+	@Override
+	public void addProduct(Product p) throws DaoException {
+		String SQL = "INSERT INTO products (id, name, price, quantity) VALUES (0, ?, ?, ?)";
+		Connection con = null;
+		try {
+			con = DBUtil.getConnection();
+			con.setAutoCommit(false);
+			PreparedStatement ps = con.prepareStatement(SQL);
+			ps.setString(1, p.getName());
+			ps.setDouble(2, p.getPrice());
+			ps.setInt(3, p.getQuantity());
+			ps.executeUpdate(); // INSERT, DELETE, UPDATE
+			con.commit();
+		} catch (SQLException e) {
+			con.rollback();
+			throw new DaoException("unable to add product " + e.getErrorCode() , e);
+		} finally {
+			DBUtil.closeConnection(con);
+		}
+	}
+
+
+
+	@Transactional
+	public void updateProduct(int id, double price) {
+		productDao.updateProduct(id, price);
+	}
+
+	if any exception comes out of this method ==> rollback else commit
+
+==========================
+
+
