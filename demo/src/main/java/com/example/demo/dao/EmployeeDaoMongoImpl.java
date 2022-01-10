@@ -1,10 +1,11 @@
 package com.example.demo.dao;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
 @Repository
-@Profile("prod")
+@ConditionalOnProperty(name="dao", havingValue = "mongo")
 public class EmployeeDaoMongoImpl implements EmployeeDao {
 
 	@Override

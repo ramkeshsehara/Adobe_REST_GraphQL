@@ -270,6 +270,95 @@ spring.profiles.active=dev
 CommandLine ==> System properties ==> application.properties
 
 
+======
+
+application.properties
+dao=mongo
+
+@ConditionalOnProperty(name="dao", havingValue = "db")
+public class EmployeeDaoDbImpl implements EmployeeDao {
+
+@ConditionalOnProperty(name="dao", havingValue = "mongo")
+public class EmployeeDaoMongoImpl implements EmployeeDao {
+
+
+---
+
+@ConditionalOnMissingBean("employeeDaoMongoImpl")
+public class EmployeeDaoDbImpl implements EmployeeDao {
+}
+
+------------
+
+@Configuration
+
+
+1) inject values into variables from properties file
+
+2) Use factory methods to create objects and hand it over to Spring container
+
+	2.1) 3rd party library provided classes needs to be used in Spring container
+	Example: DatabaseConnection Pool
+
+	@Configuration
+	public class MyConfig {
+
+		// factory methods
+		@Bean
+		public DataSource getDataSource() {
+			ComboPooledDataSource cpds = new ComboPooledDataSource();
+			cpds.setDriverClass( "org.postgresql.Driver" ); //loads the jdbc driver            
+			cpds.setJdbcUrl( "jdbc:postgresql://localhost/testdb" );
+			cpds.setUser("swaldman");                                  
+			cpds.setPassword("test-password");                                  
+				
+			// the settings below are optional -- c3p0 can work with defaults
+			cpds.setMinPoolSize(5);                                     
+			cpds.setAcquireIncrement(5);
+			cpds.setMaxPoolSize(20);
+			return cpds;
+		}
+	}
+
+	@Service
+	class MyService {
+		@Autowired
+		@DataSource ds;
+	}
+
+	2.2) Spring always used default constructor to instantiate
+
+	public class MessagingService {
+	private String url;
+	private int port;
+	
+	public MessagingService(String url, int port) {
+		this.url = url;
+		this.port = port;
+	}
+	
+	public void sendMessage(String msg) {
+		System.out.println("message " + msg + "  sent to " +url);
+	}
+}
+
+
+	@Configuration
+public class MyConfig {
+	
+	@Value("${url}")
+	private String url;
+	
+	@Value("${port}")
+	private int port;
+	
+	@Bean
+	public MessagingService msgService() {
+		return new MessagingService(url, port);
+	}
+}
+
+
 
 
 
