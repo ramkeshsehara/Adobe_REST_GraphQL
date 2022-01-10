@@ -661,3 +661,123 @@ Spring provides Declartive transaction support
 ==========================
 
 
+
+@Transactional
+public void m1() {
+	code
+	m2();
+	m3();
+	code
+}
+
+@Transactional(TxType.REQUIRES_NEW)
+public void m2() {
+	...
+}
+
+@Transactional(TxType.REQUIRED)
+public void m3() {
+	...
+}
+
+
+m1(); 
+ ==> Transaction is started [ TxA is started]
+ ==> when m2() is called [ TxA is suspended] and [ TxB is started]
+ 	if any exception occurs in m2() only TxB is rolledback, no effect on TxA
+ ==> when m2() complments ==> TxA resumes
+ ==> when m3() is called TxA is passed to m3()
+   => if m3() has exceptions TxA rollsback, code in m1 nad m3() are rolled back
+
+==>
+ MakeMyTrip
+ 	hotel booking () REQUIRES_NEW
+ 	flight booking() REQUIRES_NEW
+ 	return ticket() REQUIRES_NEW
+
+Banking
+	credit() REQUIRED
+	debit() REQUIRED
+
+===============================
+
+JPA ==> Mapping Associations 
+
+
+
+@Entity
+@Table(name="orders")
+public class Order {
+ 	 ...
+	
+	@OneToMany
+	@JoinColumn(name="order_fk")
+	private List<Item> items = new ArrayList<Item>();
+
+
+Order ord has 4 items
+To Save:
+save(ord);
+save(item1);
+save(item2);
+save(item3);
+save(item4);
+
+To delete:
+
+delete(ord);
+delete(item1);
+delete(item2);
+delete(item3);
+delete(item4);
+///
+
+===
+
+With Cascade
+
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name="order_fk")
+	private List<Item> items = new ArrayList<Item>();
+
+
+
+Order ord has 4 items
+To Save:
+save(ord); ==> saves items also
+ 
+
+To delete:
+delete(ord); ==> delete items of order
+
+No need for ItemDao
+
+===
+
+orderDao.findById(3);
+ gets order but not items
+
+itemDao.findItemOfOrder(3);
+
+===
+
+private Customer customer;
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name="order_fk")
+	private List<Item> items = new ArrayList<Item>();
+
+orderDao.findById(3);
+ gets order and its  items also
+
+==
+
+By Default:
+@ManyToOne is EAGER fetching
+@OneToMany is LAZY fetching
+
+
+======
+
+
+
