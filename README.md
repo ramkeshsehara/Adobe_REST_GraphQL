@@ -193,3 +193,16 @@ ENTRYPOINT ["java","-jar","/app.jar"]
 
 eclipse
 
+Eclipse Market Place
+
+Search for STS
+
+Spring Tools 4.3.9 
+
+================================================
+
+ 
+
+
+
+
