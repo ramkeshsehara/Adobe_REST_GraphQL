@@ -201,7 +201,76 @@ Spring Tools 4.3.9
 
 ================================================
 
- 
+
+@SpringBootApplication
+public class DemoApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(DemoApplication.class, args);
+	}
+
+}
+
+
+SpringApplication.run() ==> creates Spring container ==> ApplicationContext
+
+
+@SpringBootApplication
+
+1) @ComponentScan
+	scans for above mentioned 6 annotations from "com.example.demo" and sub-packages
+	and creates instances of these classes
+
+
+2) @EnableAutoConfiguration
+	based on depenceny included it instantes and configures
+	a) tomcat embedded contaniner
+	b) HibernateJPAVendor
+	c) Connection Pool
+
+3) @Configuration
+	this class can act like configuration class
+
+
+===
+
+Devlopment mode I need MongoDB and production mode I need SQL ==> choose beans based on profile
+
+@Repository
+@Profile("prod")
+public class EmployeeDaoMongoImpl implements EmployeeDao {
+
+	@Override
+	public void addEmployee() {
+		System.out.println("mongodb code..");
+	}
+
+}
+
+@Repository
+@Profile("dev")
+public class EmployeeDaoDbImpl implements EmployeeDao {
+	@Override
+	public void addEmployee() {
+		System.out.println("SQL code..");
+	}
+}
+
+1) Program arguments:
+--spring.profiles.active=dev
+
+Run as ==> Run ==> arguments ==> Program arguments
+--spring.profiles.active=dev
+
+2) application.properties
+spring.profiles.active=dev
+
+3) System properties
+
+CommandLine ==> System properties ==> application.properties
+
+
+
 
 
 
