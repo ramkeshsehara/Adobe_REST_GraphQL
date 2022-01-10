@@ -344,7 +344,7 @@ public class EmployeeDaoDbImpl implements EmployeeDao {
 
 
 	@Configuration
-public class MyConfig {
+	public class MyConfig {
 	
 	@Value("${url}")
 	private String url;
@@ -357,6 +357,118 @@ public class MyConfig {
 		return new MessagingService(url, port);
 	}
 }
+
+--
+
+@Service
+public class EmployeeService {
+	@Autowired
+	private EmployeeDao employeeDao;
+	
+	@Autowired
+	private MessagingService service;
+	
+	public void doTask() {
+		service.sendMessage("employee added!!!");
+		employeeDao.addEmployee();
+	}
+}
+
+==================================================
+
+JPA ==> Java Persistence API
+
+ORM ==> Object Relation Mapping ==> RDBMS
+
+ODM ==> Object Data Mapping ==> MongoDB
+
+
+Java < ==== > Relational database table
+
+ORM is a library on top of JDBC to simplfiy dtabase operations [ CRUD operations]
+
+Customer.java and Address.java in Java
+
+public class Customer {
+		id
+		firstName
+		Address address
+}
+
+public class Address {
+	street
+	city
+}
+
+
+RDBMS
+1) 
+single table
+id | firstName | street | city
+
+JDBC code to insert into.. 
+select from ..
+
+2)
+customer_table
+
+id | first_name
+1 		X
+
+address table
+id | street   | city
+1    M G Road  BLORE
+
+3)
+customer_table
+
+id | first_name
+1 		X
+
+address table
+aid | street   | city | customer_id
+101    M G Road  BLORE  | 1
+
+
+
+
+ORM
+
+@Table(name="customers")
+public class Customer {
+
+	@Column(name="fname")
+	private String firstName;
+
+	private int age;
+}
+
+
+Customer c = new Customer();
+
+save(c); // generate INSERT into customers(fname,age) values (...)
+
+findAll(); // select fname, age from customers
+
+
+ORM libraries
+1) Hibernate
+2) TopLink
+2) EclipseLink
+3) KODO
+4) OpenJPA
+5) JODO
+...
+
+JPA is a specification for ORMs
+
+JPA ==> ORM ==> JDBC ==> RDBMS
+
+
+============================
+
+
+
 
 
 
