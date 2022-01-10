@@ -465,10 +465,72 @@ JPA is a specification for ORMs
 JPA ==> ORM ==> JDBC ==> RDBMS
 
 
+==================================
+
+
+JPA
+
+		@Bean
+		public DataSource getDataSource() {
+			ComboPooledDataSource cpds = new ComboPooledDataSource();
+			cpds.setDriverClass( "org.postgresql.Driver" ); //loads the jdbc driver            
+			cpds.setJdbcUrl( "jdbc:postgresql://localhost/testdb" );
+			cpds.setUser("swaldman");                                  
+			cpds.setPassword("test-password");                                  
+				
+			// the settings below are optional -- c3p0 can work with defaults
+			cpds.setMinPoolSize(5);                                     
+			cpds.setAcquireIncrement(5);
+			cpds.setMaxPoolSize(20);
+			return cpds;
+		}
+
+
+		@Bean
+		public EntityManagerFactory emf(DataSource ds) {
+			LocalContainerEntityManagerFactoryBean emfBean = new ...
+			emfBean.setJpaVendor(new HibernateJPAVendor());
+			emfBean.setDataSource(ds);
+			emfBean.setPackagesToScan("com.adobe.prj.entity"); // @Entity
+			..
+			return emf;
+		}
+
+
+===
+
+@Repository
+public class EmployeeDaoJpaImpl implments EmployeeDao {
+	@PersistenceContext
+	EntityManager em;
+
+	addEmployee(e) {
+		em.save(e);
+	}
+
+	...
+
+}
+
+========
+
+Spring Data JPA simplifies using JPA
+
+Spring Boot
+ ==> configures HikariCP
+ ==> configures EntityManagerFactory
+ ==> no need for @Repository class
+
+ public interface EmployeeDao extends JPARepository<Employee, Integer> {
+
+ }
+
+ out of the box all CRUD operations are available
+
+ ==> internally it creates an instance of EmployeeDao which does CRUD operations with pre-defined methods
+
+
 ============================
-
-
-
 
 
 
