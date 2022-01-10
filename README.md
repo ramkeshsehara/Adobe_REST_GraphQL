@@ -14,7 +14,7 @@ Email: banuprakashc@yahoo.co.in
 
 https://www.linkedin.com/in/banu-prakash-50416019/
 
-https://github.com/BanuPrakash/JAVA11_SPRING
+https://github.com/BanuPrakash/Adobe_REST_GraphQL
 
 ====
 
