@@ -7,6 +7,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import com.adobe.entity.Customer;
+import com.adobe.entity.Item;
+import com.adobe.entity.Order;
 import com.adobe.entity.Product;
 import com.adobe.service.OrderService;
 
@@ -26,7 +29,34 @@ public class RestfulexampleApplication implements CommandLineRunner {
 		
 //		getProductsByRange();
 		
-		updateProduct();
+//		updateProduct();
+		ordering();
+	}
+
+	private void ordering() {
+		Product p1 = new Product();
+		p1.setId(3);
+		
+		Product p2 = new Product();
+		p2.setId(2);
+		
+		Item i1 = new Item();
+		i1.setProduct(p1);
+		i1.setQuantity(4);
+		
+		Item i2 = new Item();
+		i2.setProduct(p2);
+		i2.setQuantity(1);
+		
+		Order o = new Order();
+		o.getItems().add(i1);
+		o.getItems().add(i2);
+		
+		Customer c = new Customer();
+		c.setEmail("b@adobe.com");
+		o.setCustomer(c);
+		
+		service.placeOrder(o);
 	}
 
 	private void updateProduct() {

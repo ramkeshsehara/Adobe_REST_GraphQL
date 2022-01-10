@@ -780,4 +780,28 @@ By Default:
 ======
 
 
+UI:
+	{
+		"customer": {
+			"email": "a@adobe.com"
+		},
+		items: [
+			{
+				"product": {
+					id: 3
+				},
+				quantity: 2
+			},
 
+			{
+				"product": {
+					id: 2
+				},
+				quantity: 1
+			},
+		]
+	}
+
+
+Dirty Checking in JPA
+within a @Transactional if entity gets changed; it is sync with DB =-> update SQL is trigged
