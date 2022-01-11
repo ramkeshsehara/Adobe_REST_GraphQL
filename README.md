@@ -1168,6 +1168,32 @@ execution(modifiers-pattern? ret-type-pattern declaring-type-pattern? name-patte
 ====================
 
 
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>2.7.0</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>2.7.0</version>
+		</dependency>
+
+
+Resolved [org.springframework.web.bind.MethodArgumentNotValidException: Validation failed for argument [0] in public org.springframework.http.ResponseEntity<com.adobe.entity.Product>
+
+ com.adobe.api.ProductController.addProduct(com.adobe.entity.Product) with 2 errors: 
+
+ [Field error in object 'product' on field 'name': rejected value []; codes [NotBlank.product.name,NotBlank.name,NotBlank.java.lang.String,NotBlank]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [product.name,name]; arguments []; default message [name]]; default message [Name is required]] [Field error in object 'product' on field 'price': rejected value [-8900.0]; codes [Min.product.price,Min.price,Min.double,Min]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [product.price,price]; arguments []; default message [price],0]; default message [Price -8900.0 should be more than 0]] ]
+
+
+=======================================
+
+
+
+
+
+
 
 
 
