@@ -43,6 +43,10 @@ public class OrderService {
 		return orderDao.save(o);// takes care of persisting items also // cascade
 	}
 	
+	public List<Order> getOrders() {
+		return orderDao.findAll();
+	}
+	
 	
 	public Product addProduct(Product p) {
 		return productDao.save(p);
