@@ -833,4 +833,158 @@ RestfulWeb Services
 ===========================================
 
 
+Day 2:
+
+
+@SpringBootApplication => @Configuration, @ComponentScan, @EanbleAutoConfiguration
+
+@Component, @Service, @Repository, @Configuration, @Autowired, @Bean
+
+@Primary, @Qualifier, @Profile, @ConditionalOnProperty, @ConditionalOnBean
+
+
+JPA
+@Entity, @Table, @Id, @Column, @GeneratedValue, @ManyToOne, @OneToMany, @JoinColumn
+
+==
+
+DataSource, EntityManagerFactory, EntityManager [ wrapper for DB connection] -=> to perform CRUD operation
+
+extends JpaRepository<T,ID>
+
+@Query
+@Modifing
+
+
+====================
+
+
+Building RESTful Web Services
+
+Traditional Web application development ==> Server side rendered pages are sent to client
+
+Application <--> Application 
+	SOAP ==> Simple Object Access Protocol ==> Web Services
+	SOAP envelop has XML payload, headers, auth details
+	DOMParser, SAXParser, ...
+
+	REST ==> Representational State Transfer ==> Architecture Principle ==> HTTP Protocol
+
+	Resource ==> file, database, printer, ...
+
+	State of Resource is served to client in various formats => XML, CSV, JSON [JavaScript Object notation]
+	Object
+	{
+		key: value
+	}
+
+	collection []
+
+	HTTP headers:
+		"accept" : "application/json" ==> to inform the server to send JSON data to client
+
+		"content-type" : "text/xml" ==> client payload to server is on "XML" server
+
+	Resources are accessed using plural nouns ==> URI
+
+	http://localhost:8080/api/products
+
+	http://localhost:8080/api/orders
+
+	http://localhost:8080/api/customers
+
+
+	Actions are performed using VERBS ==> HTTP methods ==> GET, POST, PUT, DELETE
+
+
+	CREATE ==> POST
+	READ ==> GET
+	UPDATE ==> PUT / PATCH
+	DELETe ==> DELETE
+
+	1) 
+	GET
+	http://localhost:8080/api/products
+
+	server sends all products
+
+
+	2) PathParameter to get a single record or sub-resource
+
+		GET
+	http://localhost:8080/api/products/4
+
+	get a product whose id is 4
+
+
+	GET
+	http://localhost:8080/api/customers/a@adobe.com/orders
+
+	3) QueryPArameter ==> filter
+
+	GET
+	http://localhost:8080/api/products?low=50000&high=100000
+	http://localhost:8080/api/products?page=2&size=20
+
+	4) 
+	POST
+	http://localhost:8080/api/products
+	payload contains new product data which has to be added to "products" resource
+
+	5) 
+	PUT
+	http://localhost:8080/api/products/4
+
+	payload contains  product data which has to be updates to "product whose id is 4" resource
+
+	6) 
+
+	DELETE
+	http://localhost:8080/api/products/4
+	delete product whose id is "4"
+
+	GET and DELETE has no payload and are IDEMPOTENT ==> Safe methods
+
+	=======================================================================
+
+	POSTMAN
+
+	===============
+
+	@Controller and @RestController
+
+		@Controller ==> returns Views
+
+		@RestController ==> returns data
+
+@RestController
+@RequestMapping("/api/employees")
+public class EmployeeController {
+	@GetMapping()
+	m1() {}
+
+	@PostMapping()
+	m2() {}
+}
+
+
+<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+* Tomcat Embedded Server is included
+* HttpMessageHandler for JSON using Jackson library is included
+	Java <--> JSON
+		1) jackson
+		2) jettison
+		3) gson
+		4) moxy
+
+* DispatcherServlet, HandlerMapping
+
+===========
+
+		
+
 
