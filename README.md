@@ -1066,7 +1066,31 @@ session.invalidate();
 =============================
 
 
-Resume @ 11: 20
+Place Order:
+
+POST http://localhost:8080/api/orders
+
+body:
+
+{
+	"customer" : {
+		"email": "a@adobe.com"
+	},
+	"items": [
+			{
+				"quantity" : 2,
+				"product" : {
+					"id": 1
+				}
+			},
+			{
+				"quantity" : 1,
+				"product" : {
+					"id": 4
+				}
+			}
+	]	
+}
 
 
 
