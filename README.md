@@ -1189,21 +1189,224 @@ Resolved [org.springframework.web.bind.MethodArgumentNotValidException: Validati
 
 =======================================
 
+unit testing
+
+<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+</dependency>
+
+==> JUnit as Unit Testing Framework / TestNG
+==> Mockito ==> Mocking library [ EasyMock / JMock]
+==> Hamcrest ==> assertion librarires
+==> json-path
+
+
+@WebMvcTest(ProductController.class)
+public class ProductControllerTest {
+
+	DispatcherServletTest will be loaded
+	and ProductController is loaded into Spring container
+
+
+	@MockBean
+	private OrderService service;
+
+	creates a Mock OrderService;
+
+	----
+
+	@Autowired
+	private MockMvc mockMvc;
+
+	is used to perform CRUD operations in testing environment
+
+	============================================================
+
+	Document RESTful
+
+	RAML and OpenAPI/Swagger
+
+	RAML is YAML based
+	.yml
+	path
+		uri:
+			..
+				get:
+					//
+					arg
+
+Swagger is API based way of documnetation
+
+
+
+
+@Api
+@ApiOperation
+...
+
+for customization
+
+=============================================
+
+Association Mapping
+
+OneToMAny is LAZY by default
+ManyToOne is EAGER by default
+
+fetch = FetchType.EAGER | FetchType.LAZY
+
+A
+	B
+		C
+			D
+			E
+			F
+		X
+			Y
+
+
+A, B, Y
+
+A, B, C , E, F
+
+A, X, Y
+
+
+===> Entity Graph as solution
+
+EntityGraph
+
+@NamedEntityGraph(name = "companyWithDepartmentsGraph",
+                attributeNodes = {@NamedAttributeNode("departments")})
 
 
 
 
 
+ @NamedEntityGraph(name = "companyWithDepartmentsAndEmployeesGraph",
+                attributeNodes = {
+                		@NamedAttributeNode(value = "departments", subgraph = "departmentsWithEmployees")},
+                subgraphs = @NamedSubgraph(
+                        name = "departmentsWithEmployees",
+                        attributeNodes = @NamedAttributeNode("employees"))),
 
 
 
+hints.put("javax.persistence.fetchgraph", entityGraph);
+When using fetchgraph all relationships are considered to be lazy regardless of annotation
 
 
 
+hints.put("javax.persistence.loadgraph", entityGraph);
+uses annotation + EAGER fetch nodes
 
 
 
+====
 
+companyWithDepartmentsGraph
+
+    select
+        company0_.id as id1_2_0_,
+        company0_.name as name2_2_0_,
+        department1_.company_id as company_3_3_1_,
+        department1_.id as id1_3_1_,
+        department1_.id as id1_3_2_,
+        department1_.company_id as company_3_3_2_,
+        department1_.name as name2_3_2_ 
+    from
+        company company0_ 
+    left outer join
+        department department1_ 
+            on company0_.id=department1_.company_id 
+    where
+        company0_.id=?
+
+
+===
+companyWithDepartmentsAndEmployeesGraph
+
+select
+        company0_.id as id1_2_0_,
+        company0_.name as name2_2_0_,
+        department1_.company_id as company_3_3_1_,
+        department1_.id as id1_3_1_,
+        department1_.id as id1_3_2_,
+        department1_.company_id as company_3_3_2_,
+        department1_.name as name2_3_2_,
+        employees2_.department_id as departme5_4_3_,
+        employees2_.id as id1_4_3_,
+        employees2_.id as id1_4_4_,
+        employees2_.address_id as address_4_4_4_,
+        employees2_.department_id as departme5_4_4_,
+        employees2_.name as name2_4_4_,
+        employees2_.surname as surname3_4_4_ 
+    from
+        company company0_ 
+    left outer join
+        department department1_ 
+            on company0_.id=department1_.company_id 
+    left outer join
+        employee employees2_ 
+            on department1_.id=employees2_.department_id 
+    where
+        company0_.id=?
+
+ ===================
+
+
+SOAP Vs REST Vs GraphQL [ 2012 ==> 2015]
+
+https://jsonplaceholder.typicode.com/users
+
+============
+
+schema.graphqls ==> resources folder
+
+here we define Type ==> scalar, Object, union, interface, 
+
+Query is a special Type ==> Root type where endpoints are declared
+
+Single URI
+
+POST http://localhost:8080/graphql
+
+request payload contains "query"
+
+response comes in the form of json
+
+spring.graphql.path=/graphql
+
+
+spring.graphql.graphiql.enabled=true
+spring.graphql.graphiql.path=/graphiql
+
+
+
+===================
+
+https://www.graphql-java.com/
+
+https://www.graphql-java-kickstart.com/spring-boot/
+
+=====================
+
+lombok
+
+@Data
+@Slfj
+public class Book {
+
+}
+
+Download Lombok Jar File
+https://mvnrepository.com/artifact/org.projectlombok/lombok
+
+java -jar lombok-1.18.22.jar
+
+===================
 
 
 

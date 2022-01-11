@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.adobe.entity.Product;
 import com.adobe.service.OrderService;
 
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping("api/products")
 public class ProductController {
@@ -26,6 +28,7 @@ public class ProductController {
 	private OrderService service;
 	// http://localhost:8080/api/products GET
 	// http://localhost:8080/api/products?low=100&high=5000 GET
+	@ApiOperation(value = "get all products")
 	@GetMapping()
 	public @ResponseBody List<Product> getProducts(@RequestParam(name="low", defaultValue = "0.0") double low, 
 			@RequestParam(name="high", defaultValue = "0.0") double high) {
