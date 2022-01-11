@@ -1067,9 +1067,13 @@ session.invalidate();
 
 
 Place Order:
+OrderService ==> getOrders()
+OrderController
 
+Browser: http://localhost:8080/api/orders
+
+POSTMAN:
 POST http://localhost:8080/api/orders
-
 body:
 
 {
@@ -1091,6 +1095,67 @@ body:
 			}
 	]	
 }
+
+======================================================================
+
+AOP ==> Aspect Oriented Programming
+
+Need ==> eliminate Cross-Cutting Concerns which leads to code tangling and code scattering
+
+Aspect
+ A concern which is not a part of main logic but can be used along with main logic;
+  leads to code tangling and code scattering
+
+  ==> Logging
+  ==> Security
+  ==> Transaction
+  ==> Profile
+
+  public void transferFunds(...) {
+  	takeStartTime()
+  	log.info("transafer funcds called");
+  	if(security.isValid()) {
+  		log.info("valid user doing ...")
+  		tx.begin()
+  		credit()
+  		log.info("credited")
+  		debit();
+  		log.info("debited")
+  		tx.commit();
+
+  	}
+  	log.info("transafer funcds complted");
+  	takeEndTime();
+  }
+
+Join point
+A point where aspect can be weaved
+==> any method or exception
+
+Pointcut
+==> selected JoinPoint
+==> regex sort of expression
+
+Advice
+		==> Before
+		==> After
+		==> AfterReturing
+		==> Around
+		==> AfterThrowing
+
+ProxyObject
+
+================
+
+
+
+
+
+
+
+
+
+
 
 
 
