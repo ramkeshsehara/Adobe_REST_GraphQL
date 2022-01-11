@@ -8,6 +8,7 @@ import javax.transaction.Transactional;
 import javax.transaction.Transactional.TxType;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import com.adobe.dao.OrderDao;
@@ -18,6 +19,7 @@ import com.adobe.entity.Product;
 
 @Service
 public class OrderService {
+	
 	@Autowired
 	private ProductDao productDao;
 	

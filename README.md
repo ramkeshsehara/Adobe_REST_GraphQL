@@ -985,6 +985,96 @@ public class EmployeeController {
 
 ===========
 
-		
+@ResponseBody List<Product>
+List<Product> has to be converted to representation [ XML / JSON ] and send it in response body
+uses "accept" header
+
+
+@RequestBody Product p
+request body which has representation has  to be conveted to Java	
+uses "content-type" header
+
+
+http://localhost:8080/api/products
+http://localhost:8080/api/products/4
+http://localhost:8080/api/products?low=80000&high=500000
+
+
+POSTMAN
+
+POST http://localhost:8080/api/products
+
+Headers:
+accept: application/json
+content-type: application/json
+
+
+
+Body:
+
+ {
+     "name":"Tata Sky",
+     "price":8900.0,
+     "quantity":100
+}
+
+=======================
+Default scope of Bean is "singleton"
+
+1) 
+@Service
+@Scope("prototype")
+public class OrderService {
+
+A and B gets different instances of OrderService
+
+class A {
+	@Autowired
+	OrderService service;
+}
+
+class B {
+	@Autowired
+	OrderService service;
+}
+
+2) 
+
+@Service
+@Scope("request")
+public class OrderService {
+
+
+When client makes a request ORderService instance is added to "request"
+
+request.setAttribute("orderService", new OrderService());
+
+once response is commited this OrderService instance is destroyed
+
+3)
+
+@Service
+@Scope("session")
+public class OrderService {
+
+one per user session
+
+session.setAttribute("orderService", new OrderService());
+
+session.invalidate();
+
+=============================
+
+
+Resume @ 11: 20
+
+
+
+
+
+
+
+
+
 
 

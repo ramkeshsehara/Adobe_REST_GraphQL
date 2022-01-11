@@ -30,7 +30,7 @@ public class RestfulexampleApplication implements CommandLineRunner {
 //		getProductsByRange();
 		
 //		updateProduct();
-		ordering();
+//		ordering();
 	}
 
 	private void ordering() {
