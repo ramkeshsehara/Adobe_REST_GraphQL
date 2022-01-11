@@ -1103,13 +1103,13 @@ AOP ==> Aspect Oriented Programming
 Need ==> eliminate Cross-Cutting Concerns which leads to code tangling and code scattering
 
 Aspect
- A concern which is not a part of main logic but can be used along with main logic;
-  leads to code tangling and code scattering
+	 A concern which is not a part of main logic but can be used along with main logic;
+	  leads to code tangling and code scattering
 
-  ==> Logging
-  ==> Security
-  ==> Transaction
-  ==> Profile
+	  ==> Logging
+	  ==> Security
+	  ==> Transaction
+	  ==> Profile
 
   public void transferFunds(...) {
   	takeStartTime()
@@ -1142,10 +1142,30 @@ Advice
 		==> AfterReturing
 		==> Around
 		==> AfterThrowing
+==> No Dynamic Pointcut
+
+m1() {
+	...
+	ret = m2();
+	...
+	..
+}
+
+m2() {
+	computate here and return
+}
+
+@AfterReturning(...)
+
 
 ProxyObject
 
 ================
+
+execution(modifiers-pattern? ret-type-pattern declaring-type-pattern? name-pattern(param-pattern)
+          throws-pattern?)
+
+====================
 
 
 

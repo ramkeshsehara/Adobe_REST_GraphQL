@@ -1,8 +1,11 @@
 package com.adobe;
 
 
+import javax.persistence.EntityNotFoundException;
+
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
+import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.slf4j.Logger;
@@ -26,5 +29,10 @@ public class LogAspect {
 	@After("execution(* com.adobe.service.*.*(..))")
 	public void dologAfter(JoinPoint jp) {
 		logger.info("***********************");
+	}
+	
+	@AfterThrowing(value = "execution(* com.adobe.service.*.*(..))", throwing = "ex")
+	public void dologAfter(JoinPoint jp, EntityNotFoundException ex) {
+		logger.info("Exception occured ---> {}", ex.getMessage());
 	}
 }
