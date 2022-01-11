@@ -805,3 +805,32 @@ UI:
 
 Dirty Checking in JPA
 within a @Transactional if entity gets changed; it is sync with DB =-> update SQL is trigged
+
+======================================
+
+Customer
+
+Vehicle
+	regNo
+	type
+	..
+
+Rental
+	id
+	cost
+	Vehicle vehicle
+	Customer customer
+
+Rental has manyToone with Vechicle
+Rental has manyToone with Customer
+
+
+===================================
+
+
+RestfulWeb Services
+
+===========================================
+
+
+
