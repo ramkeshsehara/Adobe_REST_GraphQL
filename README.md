@@ -1766,10 +1766,71 @@ query {
   }
 }
 
+=========================================
+
+ Anonymous Operation:
+
+ query {
+   bookById(id: 5) {
+    title 
+    publisher {
+      name
+      books {
+        title
+      }
+    }
+  }
+}
+
+
+==> DataFetchingEnvironment ==> getOperation()
+
+Named Operation:
+
+query GET_BOOKS_BY_ID {
+   bookById(id: 5) {
+    title 
+    publisher {
+      name
+      books {
+        title
+      }
+    }
+  }
+}
 
 
 
+====
 
+query GET_BOOKS_BY_ID($bookid: Int) {
+   bookById(id: $bookid) {
+    title 
+    publisher {
+      name
+      books {
+        title
+      }
+    }
+  }
+}
+
+
+Query Variables:
+
+{
+  "bookid": 5
+}
+
+
+====================
+Resume @ 2:00
+
+SPQR
+Scalar Types
+Directives
+Pagination
+..
 
 
 
