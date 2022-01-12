@@ -1406,7 +1406,237 @@ https://mvnrepository.com/artifact/org.projectlombok/lombok
 
 java -jar lombok-1.18.22.jar
 
-===========================================
+==================================================
+
+SOAP vs REST vs GraphQL
+
+/products
+/orders ==> 100 orders (1)
+/customers/id ==> n hits
+
+/graphql POST
+
+
+
+spring.graphql.path=/graphql
+
+
+spring.graphql.graphiql.enabled=true
+spring.graphql.graphiql.path=/graphiql
+
+===================
+
+graphql-java ==> DataDetchers, DataLoaders, RuntimeWiring, Schema handlers
+graphql-kickstart ==> Resolvers
+
+=========================
+
+
+schema {
+	query: Query
+	mutation: Mutation
+	subscription: Subscription
+}
+
+Query, Mutation and Subscription are special types
+
+
+type Product {
+	fields ==> scalar, Object, enum, interfac, null
+}
+
+ID, String, Float, Boolean, Int
+
+extended-scalars
+https://github.com/graphql-java/graphql-java-extended-scalars
+
+<dependency>
+  <groupId>com.graphql-java</groupId>
+  <artifactId>graphql-java-extended-scalars</artifactId>
+  <version>17.0</version>
+</dependency>
+
+==============
+
+	
+	graphql-java-kickstart:
+
+		<dependency>
+			<groupId>com.graphql-java-kickstart</groupId>
+			<artifactId>graphql-spring-boot-starter</artifactId>
+			<version>11.1.0</version>
+		</dependency>
+
+
+  GraphiQL ==> client like POSTMAN to Query GraphQL
+
+		<dependency>
+			<groupId>com.graphql-java-kickstart</groupId>
+			<artifactId>graphiql-spring-boot-starter</artifactId>
+			<version>11.1.0</version>
+		</dependency>
+
+
+voyager ==> schema explorer ==> Like Swagger
+
+		<dependency>
+			<groupId>com.graphql-java-kickstart</groupId>
+			<artifactId>voyager-spring-boot-starter</artifactId>
+			<version>11.1.0</version>
+		</dependency>
+
+===========
+
+
+"resources" folder
+schema.graphqls
+
+type Query {
+	helloWorld:String!
+}
+
+==> we need Resolvers
+==> GraphQLQueryResolver
+
+@Component
+public class HelloWorldQueryResolver implements GraphQLQueryResolver {
+	//public String getHelloWorld() {
+	public String helloWorld() {
+		return "Hello World GraphQL!!!";
+	}
+}
+
+
+===
+
+
+http://localhost:8080/graphiql
+
+Query -=->
+query {
+  helloWorld
+}
+
+output ===>
+
+{
+  "data": {
+    "helloWorld": "Hello World GraphQL!!!"
+  }
+}
+
+
+http://localhost:8080/voyager
+
+=============
+
+
+curl --location --request POST 'http://localhost:8080/graphql' \
+--header 'Content-Type: application/json' \
+--data-raw '{"query":"query {\r\n  helloWorld\r\n}","variables":{}}'
+
+=======
+
+type Query {
+	helloWorld:String!
+	greeting(firstName:String!, lastName:String): String!
+}
+
+@Component
+public class HelloWorldQueryResolver implements GraphQLQueryResolver {
+	//public String getHelloWorld() {
+	public String helloWorld() {
+		return "Hello World GraphQL!!!";
+	}
+	
+	public String greeting(String firstName, String lastName) {
+		return String.format("Hello %s %s ", firstName, lastName);
+	}
+}
+
+
+http://localhost:8080/graphiql
+
+query {
+  greeting(firstName: "Banu", lastName : "Prakash")
+}
+
+================================
+
+application.properties
+
+spring.jpa.hibernate.ddl-auto=none
+
+schema.graphqls
+
+type Query {
+	helloWorld:String!
+	greeting(firstName:String!, lastName:String): String!
+	# return collection of books	
+	books:[Book]
+}
+
+type Book {
+	id:Int,
+	title:String!,
+	totalPages:Int,
+	rating:Float,
+	isbn:String
+}
+
+
+
+@Entity
+@Table(name="books")
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
+@ToString
+public class Book {
+	@Id
+	@Column(name="book_id")
+	private int id;
+	
+	private String title;
+	@Column(name="total_pages")
+	private Integer totalPages;
+	
+	private double rating;
+	private String isbn;
+}
+
+
+public interface BookDao extends JpaRepository<Book, Integer> {
+
+}
+
+
+
+@Component
+public class BookQueryResolver implements GraphQLQueryResolver {
+	
+	@Autowired
+	private BookDao bookDao;
+	 
+	public List<Book> getBooks() {
+		return bookDao.findAll();
+	}
+}
+
+
+
+==================
+
+query {
+  books {
+    id
+    title
+    rating
+    isbn
+  }
+}
+
+
 
 
 
