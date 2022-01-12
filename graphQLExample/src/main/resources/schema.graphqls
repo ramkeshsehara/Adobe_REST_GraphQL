@@ -1,3 +1,5 @@
+directive @deprecated on FIELD_DEFINIITION
+directive @uppercase on FIELD_DEFINIITION
 scalar Date
 
 type Query {
@@ -9,10 +11,22 @@ type Query {
 	publishers: [Publisher]
 }
 
+
+type Mutation {
+	createAuthor(author:AuthorInput):Int
+}
+
+input AuthorInput {
+	firstName:String!,
+	lastName:String,
+	middleName:String
+}
+
+
 type Book {
 	id:Int,
-	title:String!,
-	totalPages:Int,
+	title:String! @uppercase,
+	totalPages:Int @deprecated(reason:"prefer using pages"),
 	rating:Float,
 	isbn:String,
 	publishedDate: Date,

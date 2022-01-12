@@ -1824,28 +1824,177 @@ Query Variables:
 
 
 ====================
-Resume @ 2:00
+ 
+Query, GraphQLQueryResolver and GraphQLResolver [ field ]
 
-SPQR
-Scalar Types
+type, fragment
+
+===========================================
+
+* Custom Scalar Type
+
+scalar Date
+
+
+type Book {
+	id:Int,
+	title:String!,
+	totalPages:Int,
+	rating:Float,
+	isbn:String,
+	publishedDate: Date,
+	publisher:Publisher # Many To One
+}
+
+===
+
+@Configuration
+public class CustomConfig {
+	
+	@Bean
+	public GraphQLScalarType dateScalar() {
+		return GraphQLScalarType.newScalar()
+				.name("Date")
+				.description("Custom Date Scalar type")
+				.coercing(new Coercing<Date, String>() {
+					
+					@Override
+					public String serialize(Object dataFetcherResult) throws CoercingSerializeException {
+						return dataFetcherResult.toString();
+					}
+
+					// publishedDate: $pubDate
+					@Override
+					public Date parseValue(Object input) throws CoercingParseValueException {
+						try {
+							return DateFormat.getInstance().parse((String)input);
+						} catch (ParseException e) {
+							e.printStackTrace();
+						}
+						return null;
+					}
+					
+					// publishedDate: "12-JAN-2022"
+					@Override
+					public Date parseLiteral(Object input) throws CoercingParseLiteralException {
+						try {
+							return DateFormat.getInstance().parse((String)input);
+						} catch (ParseException e) {
+							e.printStackTrace();
+						}
+						return null;
+					}
+					
+				}).build();
+	}
+}
+
+==
+
+query GET_BOOKS_BY_ID($bookid: Int) {
+   bookById(id: $bookid) {
+    title 
+    publishedDate
+  }
+}
+
+============================================
+
+* Directives
+used with FIELD, ARGUMENT, INPUT
+
+Built-in Directives
+@skip
+@include
+@deprecated
+@specifiedBy
+
+===
+
+directive @deprecated on FIELD_DEFINIITION
+
+
+totalPages:Int @deprecated(reason:"prefer using pages"),
+
+====
+
+
+
+query GET_BOOKS_BY_ID($bookid: Int, $pubReq: Boolean!) {
+   bookById(id: $bookid) {
+    title 
+    publishedDate
+    totalPages
+    publisher @include(if : $pubReq) {
+      name
+    }
+  }
+}
+
+{
+  "bookid": 5,
+  "pubReq": false
+}
+
+
+===================
+
+
+* Custom Directive
+
+title:String! @uppercase,
+
+SchemaDirectiveWiring
+
+
+
+title:String @auth(role:"admin")
+
+
+=======================================================
+Query
+
 Mutation
-Error Handling
-Directives
-Pagination
-..
-
-===============================
 
 
 
+type Mutation {
+	createAuthor(author:AuthorInput):Int
+}
+
+input AuthorInput {
+	firstName:String!,
+	lastName:String,
+	middleName:String
+}
 
 
 
+public interface AuthorDao extends JpaRepository<Author, Integer>{
+
+}
+
+@Component
+public class AuthorMutationResolver implements GraphQLMutationResolver {
+	@Autowired
+	private AuthorDao authorDao;
+	
+	public Integer createAuthor(Author author) {
+		return authorDao.save(author).getId();
+	}
+}
+
+mutation {
+  createAuthor(author: {
+    firstName : "Banu",
+    lastName : "Prakash"
+  })
+}
 
 
 
-
-
+==
+	
 
 
 
