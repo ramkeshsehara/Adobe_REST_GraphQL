@@ -9,7 +9,24 @@ type Query {
 	books:[Book]
 	bookById(id:Int):Book
 	publishers: [Publisher]
+	partialInfoBookById(id:Int):Book
+	booksByPage(first:Int, after:String): BookConnection
 }
+
+#type BookConnection {
+#	edges: [BookEdge]
+#	pageInfo: PageInfo
+#}
+
+#type BookEdge {
+#	cursor: String
+#	node: Book
+#}
+
+#type PageInfo {
+#	hasPreviousPage: Boolean!
+#	hasNextPage: Boolean!
+#}
 
 
 type Mutation {

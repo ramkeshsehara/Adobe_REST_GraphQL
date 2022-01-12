@@ -2020,7 +2020,7 @@ query {
 public class ResourceNotFoundException extends RuntimeException implements GraphQLError {
 
 ==
-	DataFetchingResult:
+	DataFetcherResult:
 
 	{
   "errors": [
@@ -2054,13 +2054,170 @@ public class SimpleGraphQLErrorHandler implements GraphQLErrorHandler {
 	 }
 }
 
+====
+
+Scalar type ==> Coercing
+Directive ==> SchemaDirectiveWiring
+Mutation
+GraphQLError
 
 
- 
+
+DataFetcherResult:
 	
+public DataFetcherResult<Book> partialInfoBookById(int id) {
+		return DataFetcherResult.<Book>newResult()
+				.data(bookDao.findById(id).get())
+				.error(new GenericGraphQLError("could not get publihser of book")).build();
+}
+
+
+query {
+  partialInfoBookById(id:2) {
+    title
+  }
+}
+
+
+{
+  "errors": [
+    {
+      "message": "could not get publihser of book",
+      "locations": []
+    }
+  ],
+  "data": {
+    "partialInfoBookById": {
+      "title": "FACING THE INTELLIGENCE EXPLOSION"
+    }
+  }
+}
+
+=====================
+
+Pagination
+offset way:
+
+
+booksPaginate(page:Int, size:Int) :[Book]
+
+List<Book> booksPaginate(int page, int size) {
+	Pageable page = PageRequest.of(page, size);
+	return bookDao.findAll(page).getContent();
+}
+
+===
+
+Relay for pagination
+
+cursor-based pagination
 
 
 
+  hero {
+    name
+    friends(first:2) {
+      totalCount
+      edges {
+        node {
+          name
+        }
+        cursor
+      }
+      pageInfo {
+        hasPreviousPage
+        hasNextPage
+      }
+    }
+  }
+}
+
+
+
+type Query {
+	helloWorld:String!
+	greeting(firstName:String!, lastName:String): String!
+	# return collection of books	
+	books:[Book]
+	bookById(id:Int):Book
+	publishers: [Publisher]
+	partialInfoBookById(id:Int):Book
+	booksByPage(first:Int, after:String): BookConnection
+}
+
+type BookConnection {
+	edges: [BookEdge]
+	pageInfo: PageInfo
+}
+
+type BookEdge {
+	cursor: String
+	node: Book
+}
+
+type PageInfo {
+	hasPreviousPage: Boolean!
+	hasNextPage: Boolean!
+}
+
+
+=====
+
+
+
+cursor 
+pageInfo
+edges
+	node ==> acutual element
+	cursor
+
+query {
+  booksByPage(first:5) {
+    edges {
+      cursor
+      node {
+        title
+        rating
+        isbn
+      }
+    }
+    pageInfo {
+      hasPreviousPage
+      hasNextPage
+    }
+  }
+}
+
+
+query {
+  booksByPage(first:5, after: "c2ltcGxlLWN1cnNvcjg=") {
+    edges {
+      cursor
+      node {
+        title
+        rating
+        isbn
+      }
+    }
+    pageInfo {
+      hasPreviousPage
+      hasNextPage
+    }
+  }
+}
+
+======
+
+
+Type Definition Factory
+
+@connection
+
+booksByPage(first:Int, after:String): @connection(for:"Book")
+
+no need for BookConnection, BookEdge and PageInfo types to be declared
+
+==========
 
 
 
