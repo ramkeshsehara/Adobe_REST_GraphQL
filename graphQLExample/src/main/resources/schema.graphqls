@@ -10,7 +10,7 @@ type Query {
 	bookById(id:Int):Book
 	publishers: [Publisher]
 	partialInfoBookById(id:Int):Book
-	booksByPage(first:Int, after:String): BookConnection
+	booksByPage(first:Int, after:String): BookConnection @connection(for:"Book")
 }
 
 #type BookConnection {
