@@ -1636,6 +1636,25 @@ query {
   }
 }
 
+====
+
+query {
+  books {
+    id
+    ...BookInfo
+  }
+}
+
+fragment BookInfo on Book {
+  title
+  totalPages
+  isbn
+}
+
+=========================
+
+
+
 
 
 
