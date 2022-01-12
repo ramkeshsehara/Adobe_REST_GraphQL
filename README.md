@@ -1828,9 +1828,14 @@ Resume @ 2:00
 
 SPQR
 Scalar Types
+Mutation
+Error Handling
 Directives
 Pagination
 ..
+
+===============================
+
 
 
 

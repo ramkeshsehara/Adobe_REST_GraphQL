@@ -1,5 +1,7 @@
 package com.adobe.entity;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -25,11 +27,14 @@ public class Book {
 	private int id;
 	
 	private String title;
+	
 	@Column(name="total_pages")
 	private Integer totalPages;
 	
 	private double rating;
 	private String isbn;
+	
+	private Date publishedDate;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="publisher_id")
