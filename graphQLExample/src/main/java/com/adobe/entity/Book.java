@@ -2,7 +2,10 @@ package com.adobe.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -27,4 +30,12 @@ public class Book {
 	
 	private double rating;
 	private String isbn;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="publisher_id")
+	private Publisher publisher; // book.getPublisher().getId()
+
+	// map to FK
+	@Column(name="publisher_id", insertable = false, updatable = false)
+	private Integer publisherId; // book.getPublisherId();
 }

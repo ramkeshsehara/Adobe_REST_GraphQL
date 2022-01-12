@@ -4,6 +4,7 @@ type Query {
 	greeting(firstName:String!, lastName:String): String!
 	# return collection of books	
 	books:[Book]
+	bookById(id:Int):Book
 }
 
 type Book {
@@ -11,6 +12,11 @@ type Book {
 	title:String!,
 	totalPages:Int,
 	rating:Float,
-	isbn:String
+	isbn:String,
+	publisher:Publisher
 }
 
+type Publisher {
+ id: Int,
+ name: String
+}
