@@ -1,6 +1,7 @@
 package com.adobe.resolvers;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -21,6 +22,11 @@ public class BookQueryResolver implements GraphQLQueryResolver {
 	}
 	
 	public Book getBookById(int id) {
-		return bookDao.findById(id).get();
+		Optional<Book> opt =  bookDao.findById(id);
+		if(opt.isPresent()) {
+			return opt.get();
+		} else {
+			throw new ResourceNotFoundException("Book with id "+ id + " doesn't exist!!!");
+		}
 	}
 }

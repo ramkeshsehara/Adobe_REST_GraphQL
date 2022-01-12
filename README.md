@@ -1992,8 +1992,71 @@ mutation {
 }
 
 
+==========================================
+
+
+GraphQLError Handling
+
+query {
+  bookById(id:9990) {
+    title
+  }
+}
+
+{
+  "errors": [
+    {
+      "message": "Internal Server Error(s) while executing query",
+      "locations": []
+    }
+  ],
+  "data": {
+    "bookById": null
+  }
+}
+
+=========================
+
+public class ResourceNotFoundException extends RuntimeException implements GraphQLError {
 
 ==
+	DataFetchingResult:
+
+	{
+  "errors": [
+    {
+      "message": "Exception while fetching data (/bookById) : Book with id 9990 doesn't exist!!!",
+      "locations": [
+        {
+          "line": 2,
+          "column": 3
+        }
+      ],
+      "path": [
+        "bookById"
+      ],
+      "extensions": {
+        "classification": "DataFetchingException"
+      }
+    }
+  ],
+  "data": {
+    "bookById": null
+  }
+}
+
+
+===
+
+public class SimpleGraphQLErrorHandler implements GraphQLErrorHandler {
+	 public List<GraphQLError> processErrors(List<GraphQLError> errors) {
+	 	// to avoid complete trace
+	 }
+}
+
+
+
+ 
 	
 
 
