@@ -7,6 +7,11 @@ import java.util.Date;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.adobe.entity.Mobile;
+import com.adobe.entity.Product;
+import com.adobe.entity.Tv;
+
+import graphql.kickstart.tools.SchemaParserDictionary;
 import graphql.kickstart.tools.boot.SchemaDirective;
 import graphql.schema.Coercing;
 import graphql.schema.CoercingParseLiteralException;
@@ -16,6 +21,11 @@ import graphql.schema.GraphQLScalarType;
 
 @Configuration
 public class CustomConfig {
+	
+	@Bean
+	public SchemaParserDictionary getSchemaParserDictionary() {
+		return new SchemaParserDictionary().add(Mobile.class).add(Tv.class).add(Product.class);
+	}
 	
 	@Bean
 	public SchemaDirective uppercaseDirective() {

@@ -2219,11 +2219,80 @@ no need for BookConnection, BookEdge and PageInfo types to be declared
 
 ===============
 
+Union Example:
+
+type Product {
+	id: Int,
+	name:String,
+	price: Float
+}
+
+type Tv {
+	id: Int,
+	name:String,
+	price: Float,
+	screenType:String
+}
+
+type Mobile {
+	id: Int,
+	name:String,
+	price: Float,
+	connectivity:String
+}
+
+union ProductUnion = Product | Tv | Mobile
+
+extend type Query {
+	products: [ProductUnion]
+}
+
+
+===
+
+
+	@Bean
+	public SchemaParserDictionary getSchemaParserDictionary() {
+		return new SchemaParserDictionary().add(Mobile.class).add(Tv.class).add(Product.class);
+	}
+
+===
+
+
+
+@Component
+public class ProductResolver implements GraphQLQueryResolver {
+	public List<Product> getProducts() {
+		Product[] products = new Product[5]; // Array of 5 Pointers
+		products[0] = new Tv(133, "Sony Bravia", 135000.00, "LED"); // upcasting
+		products[1] = new Mobile(453, "MotoG", 12999.00, "4G");
+		products[2] = new Tv(634, "Onida Thunder", 3500.00, "CRT");
+		products[3] = new Mobile(621, "iPhone XR", 99999.00, "4G");
+		products[4] = new Mobile(844, "Oppo", 9999.00, "4G");
+		return Arrays.asList(products);
+	}
+}
 
 
 
 
 
+query {
+   products {
+    __typename
+    
+    ... on Mobile {
+      id
+      name
+      connectivity
+    }
+    
+    ... on Tv {
+      name
+      screenType
+    }
+  }
+}
 
 
 
