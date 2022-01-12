@@ -1652,6 +1652,128 @@ fragment BookInfo on Book {
 }
 
 =========================
+type Query {
+	helloWorld:String!
+	greeting(firstName:String!, lastName:String): String!
+	# return collection of books	
+	books:[Book]
+	bookById(id:Int):Book
+}
+
+client: 
+query {
+  bookById(id:2){
+    id
+    title
+  }
+}
+
+@Component
+public class BookQueryResolver implements GraphQLQueryResolver {
+	
+	@Autowired
+	private BookDao bookDao;
+	 
+	public List<Book> getBooks() {
+		return bookDao.findAll();
+	}
+	
+	public Book getBookById(int id) {
+		return bookDao.findById(id).get();
+	}
+}
+
+===================================================
+
+GraphQL unit Testing
+
+<dependency>
+			<groupId>com.graphql-java-kickstart</groupId>
+			<artifactId>graphql-spring-boot-starter-test</artifactId>
+			<version>11.1.0</version>
+		</dependency>
+
+	we get GraphQLTestTemplate.java
+	Helper class to test GraphQL queries and mutations.
+
+=================
+
+org.opentest4j.AssertionFailedError: expected: <{"data": {"bookById": {"id": 2,"title": "Some Book"}}}> but was: <{"data":{"bookById":{"id":2,"title":"Some Book"}}}>
+ 
+==================
+GraphQLResolver
+GraphQLQueryResolver ==> resolve how each field of a type is fethed
+
+query {
+  bookById(id:2){
+    id
+    title
+    publisher {
+      name
+    }
+  }
+}
+
+
+
+
+{
+  "errors": [
+    {
+      "message": "Internal Server Error(s) while executing query",
+      "locations": []
+    }
+  ],
+  "data": {
+    "bookById": {
+      "id": 2,
+      "title": "Facing the Intelligence Explosion",
+      "publisher": {
+        "name": null
+      }
+    }
+  }
+}
+
+========
+
+Book.java
+extra mapping to FK
+ManyToOne
+
+Publisher
+PublisehDao
+
+BookfieldQueryResolver
+
+=============
+
+
+Publihser.java
+BookDao.java
+PublisherDao.java
+PublisherQueryReolver
+PublisherFieldResolver
+
+
+query {
+   publishers {
+    name
+    books {
+      title
+      rating
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
 
 
 

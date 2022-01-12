@@ -5,6 +5,7 @@ type Query {
 	# return collection of books	
 	books:[Book]
 	bookById(id:Int):Book
+	publishers: [Publisher]
 }
 
 type Book {
@@ -13,10 +14,11 @@ type Book {
 	totalPages:Int,
 	rating:Float,
 	isbn:String,
-	publisher:Publisher
+	publisher:Publisher # Many To One
 }
 
 type Publisher {
  id: Int,
- name: String
+ name: String,
+ books: [Book] # one to many
 }
