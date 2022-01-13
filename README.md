@@ -2295,5 +2295,176 @@ query {
 }
 
 
+=======================
 
+Day 4
+
+
+
+Day 3 Recap:
+
+* resources folder we need files with "graphql" or "graphqls" extension which contains GraphQL SDL
+* schema has Query, Mutation and Subscription built-in types 
+
+schema {
+	query: Query,
+	mutation: Mutation,
+	subscription: Subscription
+}
+
+type Query {
+
+}
+
+type Mutation {
+
+}
+
+type Subscription {
+
+}
+
+
+* User types
+
+type Book {
+
+	scalar
+	object
+	enum
+}
+
+Built-in Scalar types ==> Int, ID, String, Boolean, Float
+extended-scalars ==> PositiveInt, ...
+
+Custom Scalar values
+
+scalar Email
+
+type Person {
+	email: Email
+}
+
+
+Coercing implementation ==> parseLiteral, parseValue and serialize
+
+---
+
+type Query {
+	books: [Book]
+}
+* GraphQLQueryResolver
+* GraphQLResolver<Book> to get fields of Book 
+
+type Mutation {
+	createBook(...)
+}
+
+* GraphQLMutationResolver
+
+
+---
+
+* Directives
+
+@include
+@deprecated
+@skip
+
+Custom Directive
+	SchemaDirective ==> Wiring
+	UppercaseDirective
+	@uppercase
+
+----
+
+GraphQLError
+
+---
+
+Union
+Fragments
+
+--------------------
+
+Pagination
+relay API Connection
+
+Connection has pageInfo and Edge
+Edge has cursor and node
+node is a wrapper for type [ book ...]
+
+
+---------------------------------------------------
+
+DataFetcherResult ==> errors and data
+
+To pass partial data
+
+-------------------------------------------------
+
+* Async Operations
+
+Promise API
+
+
+===============
+
+Subscription
+
+Publisher - Subscriber
+Observable -- Observer model
+
+
+<dependency>
+			<groupId>io.reactivex.rxjava2</groupId>
+			<artifactId>rxjava</artifactId>
+			<version>2.1.0</version>
+	</dependency>
+
+
+
+type Subscription {
+ authors:Author!
+}
+
+type Author {
+	id: Int,
+	firstName: String,
+	lastName: String,
+	middleName :String
+}
+
+
+
+@Component
+public class AuthorSubscription implements GraphQLSubscriptionResolver {
+	
+	@Autowired
+	private AuthorPublisher publisher;
+	
+	public Publisher<Author> authors() {
+		return publisher.getPublisher();
+	}
+}
+
+
+
+
+===
+
+Client 1:
+subscription {
+  authors {
+     firstName
+  }
+}
+
+Client 2:
+mutation {
+  createAuthor(author : {
+     firstName : "DG"
+    lastName : "G"
+  })
+}
 
