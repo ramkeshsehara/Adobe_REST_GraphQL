@@ -2495,7 +2495,7 @@ POST http://server/login
 
 UsernamePasswordAuthenticationFilter
 
-	==> attemptAuthentication
+	==> attemptAuthentication()
 
 	==> UsernamePasswordAuthenticationToken ==> username, credentials, authentecated: false
 
@@ -2506,6 +2506,77 @@ UsernamePasswordAuthenticationFilter
 
 	==> client further sends JSESSIONID in request
 
-	
+jdbcauth.zip
+methodauth.zip
+jwtexample.zip
+
+=============================
+ 
+Token based authentication ==> helpful for stateless communication ==> RESTFUL is stateless
+
+Server athenticate user and generate a "token" ==> token can have "username", "roles", "..." and send to client
+
+client has to store this token ==> different ways
+
+client has to pass the token in HTTP header
+
+KEY ==> Authorization
+
+Value ==> Bearer tokenvalue
+
+JWT is a specification for "token"
+
+=================
+
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.
+eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.
+SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+
+{
+  "alg": "HS256",
+  "typ": "JWT"
+}
+
+
+
+{
+  "sub": "1234567890",
+  "name": "John Doe",
+  "iat": 1516239022,
+  "exp"
+  "iss": "adobe",
+  "authorities" : "admin, ...."
+}
+
+HMACSHA256(
+  base64UrlEncode(header) + "." +
+  base64UrlEncode(payload),
+  secret12435 salt value
+) 
+
+
+======
+Authorization
+
+Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImF1dGhvcml0aWVzIjpbeyJhdXRob3JpdHkiOiJST0xFX0FETUlOIn0seyJhdXRob3JpdHkiOiJST0xFX1VTRVIifV0sImlhdCI6MTY0MjA1NzM2NiwiZXhwIjoxNjQyODc2MjAwfQ.JIlni2yBWDhzHzD1l_csPjZQUS1i-JrYWNrYcR2Q4sHG2PMNJheJSSjgoug8-woSInAT4uyScKnxUXSDJzVwjQ
+
+
+REquest ===> Filter ==> doFilter() ==> A Resource ==> B Resource ==> C Resoouce
+
+Response is commited
+
+
+===============
+Performance:
+DataFetchingEnvironment
+DataLoader
+
+
+======================================
+
+
+
+
+
 
 
