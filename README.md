@@ -2468,3 +2468,44 @@ mutation {
   })
 }
 
+--------------------
+
+
+Schema First approach
+
+Code first approach ==> GraphQL SPQR == leangen
+
+---------------------------------------------------
+
+
+Spring Security
+
+<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+</dependency>
+
+POST http://server/login
+
+{
+	username: "me@gmail.com",
+	password : "****"
+}
+
+
+UsernamePasswordAuthenticationFilter
+
+	==> attemptAuthentication
+
+	==> UsernamePasswordAuthenticationToken ==> username, credentials, authentecated: false
+
+	==> successfulAuthentication()
+			==> store Authentication object having pricipal and authorities in SecurityContext
+			and asociate JSESSIONID
+			pass JSESSIONID to client using Cookies
+
+	==> client further sends JSESSIONID in request
+
+	
+
+

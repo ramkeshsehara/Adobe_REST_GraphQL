@@ -12,6 +12,7 @@ import com.adobe.entity.Book;
 import com.adobe.entity.Publisher;
 
 import graphql.kickstart.tools.GraphQLResolver;
+import graphql.schema.DataFetchingEnvironment;
 import lombok.extern.slf4j.Slf4j;
 
 @Component
@@ -30,7 +31,7 @@ public class BookFieldQueryResolver implements GraphQLResolver<Book> {
 //		return publisherDao.findById(book.getPublisherId()).get();
 //	}
 	
-	public CompletableFuture<Publisher> getPublisher(Book book) {
+	public CompletableFuture<Publisher> getPublisher(Book book, DataFetchingEnvironment env) {
 	 return CompletableFuture.supplyAsync(() -> {
 		 try {
 			 Publisher publisher = publisherDao.findById(book.getPublisherId()).get();
